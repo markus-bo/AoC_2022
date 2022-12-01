@@ -28,11 +28,12 @@ using (var file = new StreamReader(inputPath))
     }
 }
 
-var maxInventoryElve = elveInventory
+var sortedInventory = elveInventory
     .Select(x => (index: x.Key, allocInventory: x.Value.Sum()))
-    .OrderByDescending(x => x.allocInventory)
-    .First();
+    .OrderByDescending(x => x.allocInventory);
+    
 
-Console.WriteLine($"{maxInventoryElve.index} {maxInventoryElve.allocInventory}");
+Console.WriteLine($"Solution for part 1: {sortedInventory.First().allocInventory}");
+Console.WriteLine($"Solution for part 2: {sortedInventory.Take(3).Sum(x => x.allocInventory)}");
 
 Console.ReadKey();
