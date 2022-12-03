@@ -17,6 +17,10 @@
 </div>
 <div>
 <a href="https://adventofcode.com/2022/day/3">Day 3</a>
+<ul>
+<li>Difficulty: simple</li>
+<li>Challenges: search between lists</li>
+</ul>
 </div>
 <div>
 <a href="https://adventofcode.com/2022/day/4">Day 4</a>
