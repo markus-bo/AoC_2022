@@ -1,10 +1,6 @@
-﻿
+﻿using System;
 
-using System;
-/**
- * Auto-generated code below aims at helping you parse
- * the standard input according to the problem statement.
- **/
+
 class Solution
 {
     public static string ROCK_A = "A";
