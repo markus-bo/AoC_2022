@@ -31,6 +31,10 @@
 </div>
 <div>
 <a href="https://adventofcode.com/2022/day/5">Day 5</a>
+<ul>
+<li>Difficulty: simple</li>
+<li>Challenges: parse input, stacks</li>
+</ul>
 </div>
 <div>
 <a href="https://adventofcode.com/2022/day/6">Day 6</a>
