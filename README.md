@@ -16,21 +16,21 @@
 </ul>
 </div>
 <div>
-<a href="https://adventofcode.com/2022/day/3">Day 3</a>
+<a href="https://adventofcode.com/2022/day/3">Day 3 - Rucksack Reorganization</a>
 <ul>
 <li>Difficulty: simple</li>
 <li>Challenges: search between lists</li>
 </ul>
 </div>
 <div>
-<a href="https://adventofcode.com/2022/day/4">Day 4</a>
+<a href="https://adventofcode.com/2022/day/4">Day 4 - Camp Cleanup</a>
 <ul>
 <li>Difficulty: simple</li>
 <li>Challenges: compare ranges</li>
 </ul>
 </div>
 <div>
-<a href="https://adventofcode.com/2022/day/5">Day 5</a>
+<a href="https://adventofcode.com/2022/day/5">Day 5 - Supply Stacks</a>
 <ul>
 <li>Difficulty: simple</li>
 <li>Challenges: parse input, stacks</li>
