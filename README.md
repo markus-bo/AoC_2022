@@ -37,7 +37,11 @@
 </ul>
 </div>
 <div>
-<a href="https://adventofcode.com/2022/day/6">Day 6</a>
+<a href="https://adventofcode.com/2022/day/6">Day 6 - Tuning Trouble</a>
+<ul>
+<li>Difficulty: very simple</li>
+<li>Challenges: array slices, distinct elements</li>
+</ul>
 </div>
 <div>
 <a href="https://adventofcode.com/2022/day/7">Day 7</a>
