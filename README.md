@@ -44,7 +44,11 @@
 </ul>
 </div>
 <div>
-<a href="https://adventofcode.com/2022/day/7">Day 7</a>
+<a href="https://adventofcode.com/2022/day/7">Day 7 - No Space Left On Device</a>
+<ul>
+<li>Difficulty: medium</li>
+<li>Challenges: linked lists, searching in tree</li>
+</ul>
 </div>
 <div>
 <a href="https://adventofcode.com/2022/day/8">Day 8</a>
