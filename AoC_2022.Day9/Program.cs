@@ -1,99 +1,102 @@
-﻿class Solution
+﻿using System.Reflection.Metadata.Ecma335;
+using System.Runtime.CompilerServices;
+using System.Security.Cryptography.X509Certificates;
+
+class Solution
 {
     static void Main(string[] args)
     {
-        var input0 = GetInput($"{Environment.CurrentDirectory}\\Input0.txt");
+        var input0a = GetInput($"{Environment.CurrentDirectory}\\Input0a.txt");
+        var input0b = GetInput($"{Environment.CurrentDirectory}\\Input0b.txt");
         var input1 = GetInput($"{Environment.CurrentDirectory}\\Input1.txt");
 
-        Console.WriteLine($"Part 1, input 0: '{solutionPart1(input0)}'");
+        Console.WriteLine($"Part 1, input 0a: '{solutionPart1(input0a)}'");
         Console.WriteLine($"Part 1, input 1: '{solutionPart1(input1)}'");
-        Console.WriteLine($"Part 2, input 0: '{solutionPart2(input0)}'");
+        Console.WriteLine($"Part 2, input 0a: '{solutionPart2(input0a)}'");
+        Console.WriteLine($"Part 2, input 0b: '{solutionPart2(input0b)}'");
         Console.WriteLine($"Part 2, input 1: '{solutionPart2(input1)}'");
     }
 
-    static string solutionPart1(string[] input)
+    static string solutionPart1(string[] input) => solution(input, 2);
+
+    static string solutionPart2(string[] input) => solution(input, 10);  
+
+    static string solution(string[] input, int numberOfKNots)
     {
         var directionLookup = new Dictionary<string, int>()
         { { "R", 1 }, { "L", -1 }, { "D", 1 }, { "U", -1 } };
 
+        // Parse input
         var movements = input.Select(x => x.Split())
-                             .Select(x => (direction: x[0], steps: int.Parse(x[1])));
+                             .Select(x => (dir: x[0], steps: int.Parse(x[1])));
 
-        var minX = 0;
-        var maxX = 0;
-        var minY = 0;
-        var maxY = 0;
+        // Get required map size and starting point to minimize array size
+        var mapParameters = GetMapParameters(movements, directionLookup);
 
-        var posX = 0;
-        var posY = 0;
+        // Define array which marks visits of last knot
+        var mapVisitedKnot = new bool[mapParameters.height][];
+
+        for (int y = 0; y < mapParameters.height; y++)
+            mapVisitedKnot[y] = new bool[mapParameters.width];
+
+        //mark starting point in map as visited by default
+        mapVisitedKnot[mapParameters.startY][mapParameters.startX] = true;
+
+        // Define head and knots
+        var knotPositions = new (int y, int x)[numberOfKNots];
+
+        // Initialize all knots with starting position
+        for (int i = 0; i < numberOfKNots; i++)
+            knotPositions[i] = (mapParameters.startY, mapParameters.startX);
 
         foreach (var movement in movements)
         {
-            if (movement.direction == "R" || movement.direction == "L")
+            for (int i = 0; i < movement.steps; i++)
             {
-                posX += movement.steps * directionLookup[movement.direction];
+                if (movement.dir == "L" || movement.dir == "R")
+                    knotPositions[0] = (knotPositions[0].y, knotPositions[0].x + directionLookup[movement.dir]);
+
+                if (movement.dir == "U" || movement.dir == "D")
+                    knotPositions[0] = (knotPositions[0].y + directionLookup[movement.dir], knotPositions[0].x);
+
+                for (int j = 1; j < numberOfKNots; j++)
+                    knotPositions[j] = GetTailPosition((knotPositions[j - 1].y, knotPositions[j - 1].x), knotPositions[j]);
+
+                mapVisitedKnot[knotPositions[numberOfKNots - 1].y][knotPositions[numberOfKNots - 1].x] = true;
+            }
+        }
+
+        var visitedFieldsCountOfLastKnot = mapVisitedKnot.Sum(x => x.Count(y => y));
+
+        return visitedFieldsCountOfLastKnot.ToString();
+    }
+
+    private static (int height, int width, int startY, int startX) GetMapParameters(IEnumerable<(string dir, int steps)> movements, Dictionary<string, int> directionLookup)
+    {
+        int minX = 0, maxX = 0, minY = 0, maxY = 0;
+        int posX = 0, posY = 0;
+
+        foreach (var move in movements)
+        {
+            if (move.dir == "R" || move.dir == "L")
+            {
+                posX += move.steps * directionLookup[move.dir];
                 maxX = Math.Max(maxX, posX);
                 minX = Math.Min(minX, posX);
             }
 
-            if (movement.direction == "D" || movement.direction == "U")
+            if (move.dir == "D" || move.dir == "U")
             {
-                posY += movement.steps * directionLookup[movement.direction];
+                posY += move.steps * directionLookup[move.dir];
                 maxY = Math.Max(maxY, posY);
                 minY = Math.Min(minY, posY);
             }
         }
 
-        Console.Error.WriteLine($"Expected limits ymin:{minY}, ymax:{maxY} xmin:{minX}, xmax:{maxX}");
-
-        var sizeX = maxX - minX + 1;
-        var sizeY = maxY - minY + 1;
-
-        Console.Error.WriteLine($"Size y:{sizeY}, x:{sizeX}");
-
-        var startX = Math.Abs(minX);
-        var startY = Math.Abs(minY);
-
-        Console.Error.WriteLine($"Startingpoint y:{startY}, x:{startX}");
-
-        var mapVisitedTail = new bool[sizeY][];
-
-        for (int y = 0; y < sizeY; y++)
-            mapVisitedTail[y] = new bool[sizeX];
-
-        //mark starting point
-        mapVisitedTail[startY][startX] = true;
-
-        var headPositionX = startX;
-        var headPositionY = startY;
-        var tailPosition = (y: startY, x: startX);
-
-        foreach (var movement in movements)
-        {
-            Console.Error.WriteLine($"Movement {movement.direction} {movement.steps}");
-            for (int i = 0; i < movement.steps; i++)
-            {
-                if (movement.direction == "L" || movement.direction == "R")
-                {
-                    headPositionX += directionLookup[movement.direction];
-                }
-
-                if (movement.direction == "U" || movement.direction == "D")
-                {
-                    headPositionY += directionLookup[movement.direction];
-                }
-
-                tailPosition = GetTailPosition((headPositionY, headPositionX), tailPosition);
-
-                mapVisitedTail[tailPosition.y][tailPosition.x] = true;
-
-                Console.Error.WriteLine($"  Head Position x:{headPositionX} y:{headPositionY}; Tail Position x:{tailPosition.x} y:{tailPosition.y}");
-            }
-        }
-
-        var visitedFieldsCount = mapVisitedTail.Sum(x => x.Count(y => y));
-        
-        return visitedFieldsCount.ToString();
+        return (height: maxY - minY + 1,
+                width: maxX - minX + 1,
+                startY: Math.Abs(minY),
+                startX: Math.Abs(minX));
     }
 
     static (int y, int x) GetTailPosition((int y, int x) head, (int y, int x) tail)
@@ -101,49 +104,28 @@
         var diffX = head.x - tail.x;
         var diffY = head.y - tail.y;
 
-        var diffXAbs = Math.Abs(head.x - tail.x);
-        var diffYAbs = Math.Abs(head.y - tail.y);
-
-        if (diffXAbs <= 1 && diffYAbs <= 1) // don't move it is adjacent
-        {
+        // don't move if it is adjacent
+        if (Math.Abs(diffX) <= 1 && Math.Abs(diffY) <= 1) 
             return tail;
-        }
 
-        if (diffXAbs == 0 && diffYAbs > 1) // same coloumn
-        {
-            if (head.y < tail.y)
-                return (tail.y - 1, tail.x);
-            else
-                return (tail.y + 1, tail.x);
-        }
+        var tailY = tail.y;
+        var tailX = tail.x;
 
-        if (diffXAbs > 1 && diffYAbs == 0) // same row
-        {
-            if (head.x < tail.x)
-                return (tail.y, tail.x - 1);
-            else
-                return (tail.y, tail.x + 1);
-        }
+        if (diffY < 0)
+            tailY -= Math.Min(Math.Abs(diffY), 1);
 
-        if (diffXAbs > 1 || diffYAbs > 1) // diagonally away
-        {
-            if (head.y < tail.y && head.x < tail.x)
-                return (tail.y - 1, tail.x - 1);
-            else if (head.y < tail.y && head.x > tail.x)
-                return (tail.y - 1, tail.x + 1);
-            else if (head.y > tail.y && head.x < tail.x)
-                return (tail.y + 1, tail.x - 1);
-            else if (head.y > tail.y && head.x > tail.x)
-                return (tail.y + 1, tail.x + 1);
-        }
+        if (diffY > 0)
+            tailY += Math.Min(Math.Abs(diffY), 1);
 
-        throw new NotImplementedException();
+        if (diffX < 0)
+            tailX -= Math.Min(Math.Abs(diffX), 1);
+
+        if (diffX > 0)
+            tailX += Math.Min(Math.Abs(diffX), 1);
+
+        return (tailY, tailX);
     }
 
-    static string solutionPart2(string[] input)
-    {
-        return "";
-    }
 
     static string[] GetInput(string inputPath) =>
         new StreamReader(inputPath)
