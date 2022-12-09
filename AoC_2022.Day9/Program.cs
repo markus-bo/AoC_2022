@@ -66,10 +66,11 @@
 
         var headPositionX = startX;
         var headPositionY = startY;
-        var tailPosition = (x: 0, y: 0);
+        var tailPosition = (y: startY, x: startX);
 
         foreach (var movement in movements)
         {
+            Console.Error.WriteLine($"Movement {movement.direction} {movement.steps}");
             for (int i = 0; i < movement.steps; i++)
             {
                 if (movement.direction == "L" || movement.direction == "R")
@@ -82,9 +83,11 @@
                     headPositionY += directionLookup[movement.direction];
                 }
 
-                tailPosition = GetTailPosition((headPositionX, headPositionY), tailPosition);
+                tailPosition = GetTailPosition((headPositionY, headPositionX), tailPosition);
 
                 mapVisitedTail[tailPosition.y][tailPosition.x] = true;
+
+                Console.Error.WriteLine($"  Head Position x:{headPositionX} y:{headPositionY}; Tail Position x:{tailPosition.x} y:{tailPosition.y}");
             }
         }
 
@@ -98,22 +101,43 @@
         var diffX = head.x - tail.x;
         var diffY = head.y - tail.y;
 
-        if (diffX <= 1 && diffY <= 1) // don't move it is adjacent
+        var diffXAbs = Math.Abs(head.x - tail.x);
+        var diffYAbs = Math.Abs(head.y - tail.y);
+
+        if (diffXAbs <= 1 && diffYAbs <= 1) // don't move it is adjacent
         {
             return tail;
         }
 
-        if (diffX == 0 && diffY > 1)
+        if (diffXAbs == 0 && diffYAbs > 1) // same coloumn
         {
-
+            if (head.y < tail.y)
+                return (tail.y - 1, tail.x);
+            else
+                return (tail.y + 1, tail.x);
         }
 
-        if (diffX > 1 && diffY == 1)
+        if (diffXAbs > 1 && diffYAbs == 0) // same row
         {
-
+            if (head.x < tail.x)
+                return (tail.y, tail.x - 1);
+            else
+                return (tail.y, tail.x + 1);
         }
 
-        
+        if (diffXAbs > 1 || diffYAbs > 1) // diagonally away
+        {
+            if (head.y < tail.y && head.x < tail.x)
+                return (tail.y - 1, tail.x - 1);
+            else if (head.y < tail.y && head.x > tail.x)
+                return (tail.y - 1, tail.x + 1);
+            else if (head.y > tail.y && head.x < tail.x)
+                return (tail.y + 1, tail.x - 1);
+            else if (head.y > tail.y && head.x > tail.x)
+                return (tail.y + 1, tail.x + 1);
+        }
+
+        throw new NotImplementedException();
     }
 
     static string solutionPart2(string[] input)
