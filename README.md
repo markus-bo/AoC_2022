@@ -58,7 +58,11 @@
 </ul>
 </div>
 <div>
-<a href="https://adventofcode.com/2022/day/9">Day 9</a>
+<a href="https://adventofcode.com/2022/day/9">Day 9 - Rope Bridge</a>
+<ul>
+<li>Difficulty: medium</li>
+<li>Challenges: loops, 2d array</li>
+</ul>
 </div>
 <div>
 <a href="https://adventofcode.com/2022/day/10">Day 10</a>
