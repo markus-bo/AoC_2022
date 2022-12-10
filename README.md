@@ -65,7 +65,11 @@
 </ul>
 </div>
 <div>
-<a href="https://adventofcode.com/2022/day/10">Day 10</a>
+<a href="https://adventofcode.com/2022/day/10">Day 10 - Cathode-Ray Tube</a>
+<ul>
+<li>Difficulty: medium</li>
+<li>Challenges: loops, ascii art</li>
+</ul>
 </div>
 <div>
 <a href="https://adventofcode.com/2022/day/11">Day 11</a>
