@@ -1,7 +1,4 @@
-﻿using System.Reflection.Metadata.Ecma335;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography.X509Certificates;
-
+﻿
 class Solution
 {
     static void Main(string[] args)
@@ -112,16 +109,16 @@ class Solution
         var tailX = tail.x;
 
         if (diffY < 0)
-            tailY -= Math.Min(Math.Abs(diffY), 1);
+            tailY--;
 
         if (diffY > 0)
-            tailY += Math.Min(Math.Abs(diffY), 1);
+            tailY++;
 
         if (diffX < 0)
-            tailX -= Math.Min(Math.Abs(diffX), 1);
+            tailX--;
 
         if (diffX > 0)
-            tailX += Math.Min(Math.Abs(diffX), 1);
+            tailX++;
 
         return (tailY, tailX);
     }
