@@ -16,15 +16,17 @@ class Solution
     static string solutionPart1(string[] input)
     {
         var cycle = 0;
-
         var registerX = 1;
-
         var signalStrength = 0;
 
-        foreach(var line in input)
+        Func<int, int, int> getSignalStrength = (cycle, registerX) =>
         {
-            if ((++cycle - 20) % 40 == 0)
-                signalStrength += cycle * registerX;
+            return ((cycle - 20) % 40 == 0) ? cycle * registerX : 0;
+        };
+
+        foreach (var line in input)
+        {
+            signalStrength += getSignalStrength(cycle++, registerX);
 
             if (line.StartsWith("noop"))
                 continue;
@@ -33,8 +35,7 @@ class Solution
             var command = splitLine[0];
             var increment = int.Parse(splitLine[1]);
 
-            if ((++cycle - 20) % 40 == 0)
-                signalStrength += cycle * registerX;
+            signalStrength += getSignalStrength(cycle++, registerX);
 
             registerX += increment;
         }
@@ -45,12 +46,10 @@ class Solution
     static string solutionPart2(string[] input)
     {
         var cycle = 0;
-
         var spriteStart = 1;
-
         var crtScreen = new StringBuilder();
 
-        Func<int, int, string> setPixel = (cycle, spriteStart) =>
+        Func<int, int, string> getPixel = (cycle, spriteStart) =>
         {
             if (cycle % 40 >= spriteStart && cycle % 40 <= spriteStart + 2)
                 return "#";
@@ -60,7 +59,7 @@ class Solution
 
         foreach (var line in input)
         {
-            crtScreen.Append(setPixel(++cycle, spriteStart));
+            crtScreen.Append(getPixel(cycle++, spriteStart));
 
             if (line.StartsWith("noop"))
                 continue;
@@ -69,7 +68,7 @@ class Solution
             var command = splitLine[0];
             var increment = int.Parse(splitLine[1]);
 
-            crtScreen.Append(setPixel(++cycle, spriteStart));
+            crtScreen.Append(getPixel(cycle++, spriteStart));
 
             spriteStart += increment;
         }
