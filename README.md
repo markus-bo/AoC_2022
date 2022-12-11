@@ -72,7 +72,11 @@
 </ul>
 </div>
 <div>
-<a href="https://adventofcode.com/2022/day/11">Day 11</a>
+<a href="https://adventofcode.com/2022/day/11">Day 11 - Monkey in the Middle</a>
+<ul>
+<li>Difficulty: medium</li>
+<li>Challenges: number theory</li>
+</ul>
 </div>
 <div>
 <a href="https://adventofcode.com/2022/day/12">Day 12</a>
