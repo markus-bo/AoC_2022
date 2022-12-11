@@ -173,10 +173,11 @@ class Solution
         var result = monkeys.Select(x => x.Value.InspectionCounter)
                .OrderByDescending(x => x)
                .Take(2)
-               .ToList();
+               .Aggregate(1L, (x, y) => x * y);
+               
                
         
-        return (result[0] * result[1]).ToString();
+        return result.ToString();
     }
 
     static string solutionPart2(string[] input)
@@ -223,12 +224,9 @@ class Solution
             }
         }
 
-        var mod = 1L;
-
-        foreach (var div in monkeys.Select(x => x.Value.Divisor).Distinct())
-        {
-            mod *= div;
-        }
+        var mod = monkeys.Select(x => (long)x.Value.Divisor)
+                         .Distinct()
+                         .Aggregate(1L, (x, y) => x * y);
 
         for (int round = 1; round <= 10000; round++)
         {
@@ -245,10 +243,9 @@ class Solution
         var result = monkeys.Select(x => x.Value.InspectionCounter)
                .OrderByDescending(x => x)
                .Take(2)
-               .ToList();
-               
+               .Aggregate(1L, (x, y) => x * y);
 
-        return (result[0]* result[1]).ToString();
+        return result.ToString();
     }
 
     static string[] GetInput(string inputPath) =>
