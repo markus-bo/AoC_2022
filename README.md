@@ -79,7 +79,11 @@
 </ul>
 </div>
 <div>
-<a href="https://adventofcode.com/2022/day/12">Day 12</a>
+<a href="https://adventofcode.com/2022/day/12">Day 12 - Hill Climbing Algorithm</a>
+<ul>
+<li>Difficulty: medium</li>
+<li>Challenges: Path Finding, DFS</li>
+</ul>
 </div>
 <div>
 <a href="https://adventofcode.com/2022/day/13">Day 13</a>
