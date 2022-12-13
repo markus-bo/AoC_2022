@@ -1,10 +1,4 @@
-﻿using System.Data.Common;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography.X509Certificates;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-
-class Solution
+﻿class Solution
 {
     static void Main(string[] args)
     {
@@ -39,29 +33,25 @@ class Solution
 
     static string solutionPart2(string[] input)
     {
-
-        var arrays = input.Append("[[2]]")
-                         .Append("[[6]]")
-                         .Where(x => x != "")
+        var arrays = input.Where(x => x != "")
                          .Select(x => x.Replace(",", " , ")
                                        .Replace("]", " ] ")
                                        .Replace("[", " [ ")
                                        .Split()
                                        .Where(y => y != "" && y != ",")
                                        .ToArray())
-                         .Select(x => ParseInput(x))
+                         .Select(x => (marker: 0, value: x))
+                         .Append((marker: 1, value: new string[] {"[", "[", "2", "]", "]"}))
+                         .Append((marker: 1, value: new string[] { "[", "[", "6", "]", "]" }))
+                         .Select(x => (marker: x.marker, value: ParseInput(x.value)))
                          .ToList();
 
-        arrays.Sort((a, b) => (int)compareOrder(a, b));
+        arrays.Sort((a, b) => (int)compareOrder(a.value, b.value));
 
-        var result = arrays.Select((x, i) => (value: x as List<object>, index: i + 1))
-                            .Where(x => x.value.Count == 1)
-                            .Where(x => x.value[0] is List<object>)
-                            .Where(x => (x.value[0] as List<object>).Count == 1)
-                            .Where(x => (x.value[0] as List<object>)[0] is int)
-                            .Where(x => (int)(x.value[0] as List<object>)[0] == 2 || (int)(x.value[0] as List<object>)[0] == 6)
-                            .Select(x => x.index)
-                            .Aggregate(1, (a, b) => a * b);
+        var result = arrays.Select((x, i) => (marker: x.marker, index: i + 1))
+                .Where(x => x.marker == 1)
+                .Select(x => x.index)
+                .Aggregate(1, (a, b) => a * b);
 
         return result.ToString();
     }
@@ -69,14 +59,14 @@ class Solution
 
     static int indexParser = 0;
 
-    static object ParseInput(string[] input)
+    static object? ParseInput(string[] input)
     {
         indexParser = 0;
 
-        return ParseInputRecursion(input);
+        return ParseInputRecursion(input)!;
     }
 
-    static object ParseInputRecursion(string[] input)
+    static object? ParseInputRecursion(string[] input)
     {
         object parsedArray = null;
 
@@ -85,12 +75,12 @@ class Solution
             parsedArray = new List<object>();
 
             while (input[++indexParser] != "]")
-                (parsedArray as List<object>).Add(ParseInputRecursion(input));
+                (parsedArray as List<object>)!.Add(ParseInputRecursion(input)!);
         }
         else if (input[indexParser].All(x => char.IsDigit(x)))
             parsedArray = int.Parse(input[indexParser]);
 
-        return parsedArray;
+        return parsedArray!;
     }
 
     enum Order
@@ -118,21 +108,19 @@ class Solution
 
             var i = 0;
 
-            while (i < leftList.Count && i < rightList.Count)
+            while (i < leftList!.Count && i < rightList!.Count)
             {
                 var inorder = compareOrder(leftList[i], rightList[i]);
 
-                if (inorder == Order.RIGHT)
-                    return Order.RIGHT;
-                else if (inorder == Order.WRONG)
-                    return Order.WRONG;
+                if (inorder == Order.RIGHT || inorder == Order.WRONG)
+                    return inorder;
 
                 i++;
             }
 
-            if (i == leftList.Count && i < rightList.Count)
+            if (i == leftList.Count && i < rightList!.Count)
                 return Order.RIGHT;
-            else if (i == rightList.Count && i < leftList.Count)
+            else if (i == rightList!.Count && i < leftList.Count)
                 return Order.WRONG;
             else
                 return Order.UNCLEAR;

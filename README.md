@@ -86,7 +86,11 @@
 </ul>
 </div>
 <div>
-<a href="https://adventofcode.com/2022/day/13">Day 13</a>
+<a href="https://adventofcode.com/2022/day/13">Day 13 - Distress Signal</a>
+<ul>
+<li>Difficulty: medium</li>
+<li>Challenges: String Parsing, Recursion, Nested Lists</li>
+</ul>
 </div>
 <div>
 <a href="https://adventofcode.com/2022/day/14">Day 14</a>
