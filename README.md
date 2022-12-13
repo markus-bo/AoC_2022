@@ -82,14 +82,14 @@
 <a href="https://adventofcode.com/2022/day/12">Day 12 - Hill Climbing Algorithm</a>
 <ul>
 <li>Difficulty: medium</li>
-<li>Challenges: Path Finding, DFS</li>
+<li>Challenges: path finding, dfs</li>
 </ul>
 </div>
 <div>
 <a href="https://adventofcode.com/2022/day/13">Day 13 - Distress Signal</a>
 <ul>
 <li>Difficulty: medium</li>
-<li>Challenges: String Parsing, Recursion, Nested Lists</li>
+<li>Challenges: string parsing, recursion, nested lists</li>
 </ul>
 </div>
 <div>
