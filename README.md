@@ -94,6 +94,10 @@
 </div>
 <div>
 <a href="https://adventofcode.com/2022/day/14">Day 14</a>
+<ul>
+<li>Difficulty: medium</li>
+<li>Challenges: loops</li>
+</ul>
 </div>
 <div>
 <a href="https://adventofcode.com/2022/day/15">Day 15</a>
