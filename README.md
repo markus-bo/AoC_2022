@@ -93,7 +93,7 @@
 </ul>
 </div>
 <div>
-<a href="https://adventofcode.com/2022/day/14">Day 14</a>
+<a href="https://adventofcode.com/2022/day/14">Day 14 - Regolith Reservoir</a>
 <ul>
 <li>Difficulty: medium</li>
 <li>Challenges: loops</li>
