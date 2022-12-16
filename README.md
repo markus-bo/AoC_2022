@@ -100,10 +100,18 @@
 </ul>
 </div>
 <div>
-<a href="https://adventofcode.com/2022/day/15">Day 15</a>
+<a href="https://adventofcode.com/2022/day/15">Day 15 - Beacon Exclusion Zone</a>
+<ul>
+<li>Difficulty: medium</li>
+<li>Challenges: searching 2D array</li>
+</ul>
 </div>
 <div>
-<a href="https://adventofcode.com/2022/day/16">Day 16</a>
+<a href="https://adventofcode.com/2022/day/16">Day 16 - Proboscidea Volcanium</a>
+<ul>
+<li>Difficulty: hard</li>
+<li>Challenges: undirected cyclic graph search, dfs, pruning</li>
+</ul>
 </div>
 <div>
 <a href="https://adventofcode.com/2022/day/17">Day 17</a>
