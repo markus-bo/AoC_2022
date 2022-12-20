@@ -114,16 +114,32 @@
 </ul>
 </div>
 <div>
-<a href="https://adventofcode.com/2022/day/17">Day 17</a>
+<a href="https://adventofcode.com/2022/day/17">Day 17 - Pyroclastic Flow</a>
+<ul>
+<li>Difficulty: very hard</li>
+<li>Challenges: pattern matching</li>
+</ul>
 </div>
 <div>
-<a href="https://adventofcode.com/2022/day/18">Day 18</a>
+<a href="https://adventofcode.com/2022/day/18">Day 18 - Boiling Boulders</a>
+<ul>
+<li>Difficulty: hard</li>
+<li>Challenges: 3d space, dfs</li>
+</ul>
 </div>
 <div>
-<a href="https://adventofcode.com/2022/day/19">Day 19</a>
+<a href="https://adventofcode.com/2022/day/19">Day 19 - Not Enough Minerals</a>
+<ul>
+<li>Difficulty: hard</li>
+<li>Challenges: graph search, dfs, pruning, optimization</li>
+</ul>
 </div>
 <div>
-<a href="https://adventofcode.com/2022/day/20">Day 20</a>
+<a href="https://adventofcode.com/2022/day/20">Day 20 - Grove Positioning System</a>
+<ul>
+<li>Difficulty: medium</li>
+<li>Challenges: cyclic lists</li>
+</ul>
 </div>
 <div>
 <a href="https://adventofcode.com/2022/day/21">Day 21</a>
