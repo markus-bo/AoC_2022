@@ -142,7 +142,11 @@
 </ul>
 </div>
 <div>
-<a href="https://adventofcode.com/2022/day/21">Day 21</a>
+<a href="https://adventofcode.com/2022/day/21">Day 21 - Monkey Math</a>
+<ul>
+<li>Difficulty: hard</li>
+<li>Challenges: binary search, memoization, dependency Graph</li>
+</ul>
 </div>
 <div>
 <a href="https://adventofcode.com/2022/day/22">Day 22</a>

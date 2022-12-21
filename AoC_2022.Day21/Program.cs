@@ -8,21 +8,32 @@ public enum ArgumentTypeEnum
 
 interface IArgument
 {
-    public long GetValue(Dictionary<string, Operation> operations);
+    public double GetValue(Dictionary<string, Operation> operations);
+
+    public void ResetMemory();
 }
 
 class ValueArgument : IArgument
 {
-    public long Value { get; private set; }
+    public double Value { get; set; }
 
-    public ValueArgument(long value)
+    public ValueArgument()
+    {
+        this.Value = 0;
+    }
+
+    public ValueArgument(double value)
     { 
         this.Value = value; 
     }
 
-    public long GetValue(Dictionary<string, Operation> operations)
+    public double GetValue(Dictionary<string, Operation> operations)
     {
         return Value;
+    }
+
+    public void ResetMemory()
+    {
     }
 }
 
@@ -31,14 +42,14 @@ class ReferenceArgument : IArgument
     public string Reference { get; private set; }
 
     private bool ValueCalculated = false;
-    private long calculatedValue = 0L;
+    private double calculatedValue = 0.0;
 
     public ReferenceArgument(string reference)
     {
         Reference = reference;
     }
 
-    public long GetValue(Dictionary<string, Operation> operations)
+    public double GetValue(Dictionary<string, Operation> operations)
     {
         if (ValueCalculated == true)
             return calculatedValue;
@@ -47,6 +58,8 @@ class ReferenceArgument : IArgument
         ValueCalculated = true;
         return calculatedValue;
     }
+
+    public void ResetMemory() => this.ValueCalculated = false;
 }
 
 class Operation
@@ -59,24 +72,33 @@ class Operation
 
     public IArgument Arg2 { get; private set; }
 
-    public Operation(string op, IArgument arg1, IArgument arg2 = null)
+    public Operation(string op, IArgument arg1, IArgument arg2)
     {
         Op = op;
         Arg1 = arg1;
         Arg2 = arg2;
     }
 
-    public long GetValue()
+    public double GetValue()
     {
         return Op switch
         {
-            "=" => Arg1.GetValue(Operations),
+            "val" => Arg1.GetValue(Operations),
             "+" => Arg1.GetValue(Operations) + Arg2.GetValue(Operations),
             "-" => Arg1.GetValue(Operations) - Arg2.GetValue(Operations),
             "*" => Arg1.GetValue(Operations) * Arg2.GetValue(Operations),
             "/" => Arg1.GetValue(Operations) / Arg2.GetValue(Operations),
             _ => throw new NotImplementedException()
         };
+    }
+
+    public static void ResetMemory()
+    {
+        foreach(var op in Operations)
+        {
+            op.Value.Arg1.ResetMemory();
+            op.Value.Arg2.ResetMemory();
+        }
     }
 }
 class Solution
@@ -103,11 +125,11 @@ class Solution
 
             if (operationTerm.Length == 1)
             {
-                var arg1 = long.Parse(operationTerm[0]);
+                var arg1 = double.Parse(operationTerm[0]);
 
                 Operation.Operations.Add(
                     monkey,
-                    new Operation("=", new ValueArgument(arg1)));
+                    new Operation("val", new ValueArgument(arg1), new ValueArgument()));
             }
             else
             {
@@ -128,7 +150,73 @@ class Solution
 
     static string solutionPart2(string[] input)
     {
-        return "";
+        Operation.Operations.Clear();
+        
+        foreach (var line in input)
+        {
+            var monkey = line.Split(": ")[0];
+            var operationTerm = line.Split(": ")[1].Split();
+
+            if (operationTerm.Length == 1)
+            {
+                var arg1 = double.Parse(operationTerm[0]);
+
+                Operation.Operations.Add(
+                    monkey,
+                    new Operation("val", new ValueArgument(arg1), new ValueArgument()));
+            }
+            else
+            {
+                var arg1 = operationTerm[0];
+                var arg2 = operationTerm[2];
+                var op = operationTerm[1];
+
+                Operation.Operations.Add(
+                    monkey,
+                    new Operation(op, new ReferenceArgument(arg1), new ReferenceArgument(arg2)));
+            }
+        }
+
+        var initialHumanValue = (long)(Operation.Operations["humn"].Arg1 as ValueArgument)!.Value;
+
+        var rootLeft = Operation.Operations["root"].Arg1;
+        var rootRight = Operation.Operations["root"].Arg2;
+
+        for (int i = 0; i <= 1; i++)
+        {
+            Operation.ResetMemory();
+
+            (Operation.Operations["humn"].Arg1 as ValueArgument)!.Value = initialHumanValue;
+
+            var leftRootResult = rootLeft.GetValue(Operation.Operations);
+            var rightRootResult = rootRight.GetValue(Operation.Operations);
+
+            var maxHuman = long.MaxValue;
+            var minHuman = long.MinValue;
+            var count = 0;
+
+            var searchDirection = i == 0 ? 1 : -1;
+
+            while (leftRootResult != rightRootResult && ++count < 100)
+            {
+                if (leftRootResult.CompareTo(rightRootResult) == searchDirection)
+                    minHuman = Math.Max(minHuman, (long)(Operation.Operations["humn"].Arg1 as ValueArgument)!.Value);
+                else
+                    maxHuman = Math.Min(maxHuman, (long)(Operation.Operations["humn"].Arg1 as ValueArgument)!.Value);
+
+                (Operation.Operations["humn"].Arg1 as ValueArgument)!.Value = minHuman + (maxHuman - minHuman) / 2;
+
+                Operation.ResetMemory();
+
+                leftRootResult = rootLeft.GetValue(Operation.Operations);
+                rightRootResult = rootRight.GetValue(Operation.Operations);
+            }
+
+            if (leftRootResult == rightRootResult)
+                return Operation.Operations["humn"].Arg1.GetValue(Operation.Operations).ToString();
+        }
+
+        throw new InvalidOperationException();
     }
 
     static string[] GetInput(string inputPath) =>
@@ -138,158 +226,3 @@ class Solution
             .Select(x => x.Trim('\r'))
             .ToArray();
 }
-
-
-/*
- * class Cell
-{
-    public enum ValueTypeEnum
-    {
-            VALUE,
-            REFERENCE
-    }
-
-    public ValueTypeEnum ValueType {get; set;}
-
-    public int Value {get; set;}
-
-    private bool ValueCalculated = false;
-    private int calculatedValue = 0;
-
-    public int GetValue(List<Operation> operations)
-    { 
-        if (ValueType == ValueTypeEnum.VALUE)
-        {
-            return Value;
-        }
-        else if (ValueType == ValueTypeEnum.REFERENCE)
-        {
-            if (ValueCalculated == false)
-            {
-
-                calculatedValue = operations[Value].GetValue();
-                ValueCalculated = true;
-                return calculatedValue;
-            }
-            else
-            {
-                return calculatedValue;
-            }
-        }
-
-        return 0;
-    }
-}
-
-class Operation
-{
-    public static List<Operation> Operations = new List<Operation>();
-
-    public enum OperatorType
-    {
-            VALUE,
-            ADD,
-            SUB,
-            MULT
-    }
-
-    public OperatorType Operator {get; set;}
-
-    public Cell Argument1 {get; set;}
-
-    public Cell Argument2{get; set;}
-
-    
-
-    public int GetValue()
-    {
-        switch(Operator)
-        {
-            case OperatorType.VALUE:
-                return Argument1.GetValue(Operations);
-                break;
-
-            case OperatorType.ADD:
-                return Argument1.GetValue(Operations) + Argument2.GetValue(Operations);
-                break;
-
-            case OperatorType.SUB:
-                return Argument1.GetValue(Operations) - Argument2.GetValue(Operations);
-                break;
-
-            case OperatorType.MULT:
-                return Argument1.GetValue(Operations) * Argument2.GetValue(Operations);
-                break;
-        }
-
-        return 0;
-    }
-}
-
-
-class Solution
-{
-    static void Main(string[] args)
-    {
-        int N = int.Parse(Console.ReadLine());
-        for (int i = 0; i < N; i++)
-        {
-            string[] inputs = Console.ReadLine().Split(' ');
-            string operation = inputs[0];
-            string arg1 = inputs[1];
-            string arg2 = inputs[2];
-
-            Operation.OperatorType type;
-            if (operation == "VALUE")
-                type = Operation.OperatorType.VALUE;
-            else if (operation == "ADD")
-                type = Operation.OperatorType.ADD;
-            else if (operation == "SUB")
-                type = Operation.OperatorType.SUB;
-            else
-                type = Operation.OperatorType.MULT;
-
-
-            Cell argument1 = new Cell()
-            {
-                ValueType = arg1.StartsWith("$") ? Cell.ValueTypeEnum.REFERENCE : Cell.ValueTypeEnum.VALUE,
-                Value = int.Parse(arg1.TrimStart('$'))
-            };
-
-            Cell argument2; 
-            try
-            {
-                argument2 = new Cell()
-                {
-                    ValueType = arg2.StartsWith("$") ? Cell.ValueTypeEnum.REFERENCE : Cell.ValueTypeEnum.VALUE,
-                    Value = int.Parse(arg2.TrimStart('$'))
-                };
-            }
-            catch {
-                argument2 = new Cell();
-            }
-
-            Operation.Operations.Add(new Operation()
-            {
-                Operator = type,
-                Argument1 = argument1,
-                Argument2 = argument2
-            });
-        }
-
-
-        for (int i = 0; i < N; i++)
-        {
-            
-            // Write an answer using Console.WriteLine()
-            // To debug: Console.Error.WriteLine("Debug messages...");
-
-            Console.WriteLine(Operation.Operations[i].GetValue());
-        }
-    }
-}
- * 
- * 
- * 
- * 
- */
