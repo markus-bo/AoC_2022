@@ -197,7 +197,7 @@ class Solution
 
             var searchDirection = i == 0 ? 1 : -1;
 
-            while (leftRootResult != rightRootResult && ++count < 100)
+            while (leftRootResult != rightRootResult && ++count < 64)
             {
                 if (leftRootResult.CompareTo(rightRootResult) == searchDirection)
                     minHuman = Math.Max(minHuman, (long)(Operation.Operations["humn"].Arg1 as ValueArgument)!.Value);
