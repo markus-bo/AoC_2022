@@ -23,32 +23,30 @@
         var curX = map[0].IndexOf('.');
         var curY = 0;
 
-        var dir = 0; // 0 is right, 1 is down, 2 is left, 3 is up
+        var pose = 0; // 0 is right, 1 is down, 2 is left, 3 is up
         var length = 0;
 
         foreach(var instr in instructions)
         {
-            //Console.Error.WriteLine($"{curY} {curX} {dir}");
-
             if (int.TryParse(instr, out int temp_length))
             {
                 length = temp_length;
             }
             else if (instr == "L" || instr == "R")
             {
-                dir += instr == "L" ? -1 : 1;
+                pose += instr == "L" ? -1 : 1;
 
-                if (dir < 0)
-                    dir += 4;
+                if (pose < 0)
+                    pose += 4;
 
-                if (dir > 3)
-                    dir -= 4;
+                if (pose > 3)
+                    pose -= 4;
             }
 
             while(length > 0)
             {
-                var checkX = curX + (dir == 0 ? 1 : dir == 2 ? -1 : 0);
-                var checkY = curY + (dir == 1 ? 1 : dir == 3 ? -1 : 0);
+                var checkX = curX + (pose == 0 ? 1 : pose == 2 ? -1 : 0);
+                var checkY = curY + (pose == 1 ? 1 : pose == 3 ? -1 : 0);
 
                 if (checkY < 0)
                 {
@@ -66,12 +64,38 @@
                         f = map[++y][checkX];
                     checkY = y;
                 }
+                else if (pose == 1 || pose == 3)
+                {
+                    if (map[checkY][checkX] == ' ' && pose == 1)
+                    {
+                        var y = -1;
+                        var f = ' ';
+                        while(f != '#' && f != '.')
+                            f = map[++y][checkX];
+                        checkY = y;
+                    }
+                    else if (map[checkY][checkX] == ' ' && pose == 3)
+                    {
+                        var y = map.Count;
+                        var f = ' ';
+                        while(f != '#' && f != '.')
+                            f = map[--y][checkX];
+                        checkY = y;
+                    }
+                }
+
 
                 if (checkX < 0)
                     checkX = Math.Max(map[checkY].LastIndexOf('.'), map[checkY].LastIndexOf('#'));
                 else if (checkX >= map[checkY].Length)
                     checkX = Math.Min(Math.Max(0, map[checkY].IndexOf('.')), Math.Max(0,map[checkY].IndexOf('#')));
-
+                else if (pose == 0 || pose == 2)
+                {
+                    if (map[checkY][checkX] == ' ' && pose == 0)
+                        checkX = Math.Min(Math.Max(0, map[checkY].IndexOf('.')), Math.Max(0,map[checkY].IndexOf('#')));
+                    else if (map[checkY][checkX] == ' ' && pose == 2)
+                        checkX = Math.Max(map[checkY].LastIndexOf('.'), map[checkY].LastIndexOf('#'));
+                }
 
                 if (map[checkY][checkX] == '#')
                     break;
@@ -85,9 +109,8 @@
             length = 0;
         }
 
-        var result = (curY + 1) * 1000 + (curX + 1) * 4 + dir;
+        var result = (curY + 1) * 1000 + (curX + 1) * 4 + pose;
         
-        //12056 too low
         return result.ToString();
     }
 
