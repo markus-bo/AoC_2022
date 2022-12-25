@@ -152,13 +152,24 @@
 <a href="https://adventofcode.com/2022/day/22">Day 22</a>
 </div>
 <div>
-<a href="https://adventofcode.com/2022/day/23">Day 23</a>
+<a href="https://adventofcode.com/2022/day/23">Day 23 - Unstable Diffusion</a>
+<ul>
+<li>Difficulty: medium</li>
+<li>Challenges: maps, optimized access</li>
+</ul>
 </div>
 <div>
-<a href="https://adventofcode.com/2022/day/24">Day 24</a>
+<a href="https://adventofcode.com/2022/day/24">Day 24 - Blizzard Basin</a>
 <ul>
 <li>Difficulty: hard</li>
 <li>Challenges: bfs, path finding, dynamic obstacles</li>
+</ul>
+</div>
+<div>
+<a href="https://adventofcode.com/2022/day/24">Day 25 - Full of Hot Air</a>
+<ul>
+<li></li>
+<li></li>
 </ul>
 </div>
 </body>
