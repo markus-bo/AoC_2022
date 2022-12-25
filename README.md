@@ -156,5 +156,9 @@
 </div>
 <div>
 <a href="https://adventofcode.com/2022/day/24">Day 24</a>
+<ul>
+<li>Difficulty: hard</li>
+<li>Challenges: bfs, path finding, dynamic obstacles</li>
+</ul>
 </div>
 </body>
