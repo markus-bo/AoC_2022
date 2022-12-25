@@ -54,6 +54,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AoC_2022.Day22", "AoC_2022.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AoC_2022.Day24", "AoC_2022.Day24\AoC_2022.Day24.csproj", "{327DEE83-4DBA-4CD3-A74D-B3E2EA5FA188}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AoC_2022.Day25", "AoC_2022.Day25\AoC_2022.Day25.csproj", "{3E26BC4D-3F33-4CE1-A8C4-6A6586BBF783}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -152,6 +154,10 @@ Global
 		{327DEE83-4DBA-4CD3-A74D-B3E2EA5FA188}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{327DEE83-4DBA-4CD3-A74D-B3E2EA5FA188}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{327DEE83-4DBA-4CD3-A74D-B3E2EA5FA188}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E26BC4D-3F33-4CE1-A8C4-6A6586BBF783}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E26BC4D-3F33-4CE1-A8C4-6A6586BBF783}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E26BC4D-3F33-4CE1-A8C4-6A6586BBF783}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E26BC4D-3F33-4CE1-A8C4-6A6586BBF783}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
