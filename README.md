@@ -117,7 +117,7 @@
 <a href="https://adventofcode.com/2022/day/17">Day 17 - Pyroclastic Flow</a>
 <ul>
 <li>Difficulty: very hard</li>
-<li>Challenges: pattern matching</li>
+<li>Challenges: pattern matching, memoization</li>
 </ul>
 </div>
 <div>

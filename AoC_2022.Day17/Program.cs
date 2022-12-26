@@ -1,4 +1,6 @@
-﻿class Solution
+﻿using System.Diagnostics;
+
+class Solution
 {
     static void Main(string[] args)
     {
@@ -7,7 +9,7 @@
 
         Console.WriteLine($"Part 1, input 0: '{solutionPart1(input0)}'");
         Console.WriteLine($"Part 1, input 1: '{solutionPart1(input1)}'");
-        //Console.WriteLine($"Part 2, input 0: '{solutionPart2(input0)}'");
+        Console.WriteLine($"Part 2, input 0: '{solutionPart2(input0)}'");
         Console.WriteLine($"Part 2, input 1: '{solutionPart2(input1)}'");
     }
 
@@ -142,43 +144,69 @@
             new string[] { "##", "##" }
         };
 
-        var map = new List<char[]>();
+        var map = new char[100000][];
 
-        map.Add("#########".ToCharArray());
-
-        for (int i = 1; i < 10000; i++)
-            map.Add("#.......#".ToCharArray());
+        map[0] = "#########".ToCharArray();
+        for (int i = 1; i < 100000; i++)
+            map[i] = "#.......#".ToCharArray();
 
 
 
         var topRow = 0;
-        var topRowMultiplier = 0;
         var jetIndex = -1;
         var rockIndex = -1;
 
-        for (var i = 0L; i < 1_000_000_000_000; i++)
+        var hashList = new Dictionary<string, (long topRow, long index)>();
+        var heightList = new List<int>();
+
+        var remainder = 1_000_000_000_000L;
+
+        var topRowAfterMultiply = long.MinValue;
+        var topRowBuffer = 0;
+
+        for (var i = 0L; i < 1_000_000_000_000L; i++)
         {
-            if (i<5000)
+            if (i == remainder)
             {
-                Console.Error.WriteLine(i.ToString().PadLeft(7) + ";" + (topRowMultiplier * 5000 + topRow).ToString());
+                var diff = topRow - topRowBuffer;
+
+                var result = topRowAfterMultiply + diff;
+
+                return result.ToString();
             }
 
-            if (topRow >= 9000)
+            if (i >= 500)
             {
-                map.RemoveRange(0, 5000);
+                //var hash = string.Join("", map[(topRow - 100)..topRow].Select(s => new string(s))).GetHashCode();
 
-                for (int j = 0; j < 5000; j++)
-                    map.Add("#.......#".ToCharArray());
+                var hash = string.Join("", map[(topRow - 500)..(topRow + 1)].Select(s => new string(s)));
 
-                topRow -= 5000;
-                topRowMultiplier++;
+
+                if (topRowAfterMultiply == long.MinValue)
+                {
+                    if (hashList.ContainsKey(hash))
+                    {
+                        var step = topRow - hashList[hash].topRow;
+
+                        Trace.WriteLine($"step {step}, index old {hashList[hash].index}, index current {i}");
+
+                        var patternCount = (long)Math.Floor((1_000_000_000_000L - 500.0) / (i - hashList[hash].index));
+                        topRowAfterMultiply = patternCount * step + hashList[hash].topRow;
+                        var remainingRocks = 1_000_000_000_000L - (patternCount * (i - hashList[hash].index) + 500);
+                        remainder = remainingRocks + i;
+                        topRowBuffer = topRow;
+                        hashList[hash] = (topRow, i);
+                    }
+                    else
+                    {
+                        hashList.Add(hash, (topRow, i));
+                    }
+                }
             }
 
             if (++rockIndex >= rockPatterns.Count)
                 rockIndex = 0;
-
-            //Console.Error.WriteLine(rockIndex);
-
+         
             var rockFalling = true;
             var rockYOffset = topRow + 3 + rockPatterns[rockIndex].Length;
             var rockXOffset = 3;
@@ -186,11 +214,7 @@
             while (rockFalling)
             {
                 if (++jetIndex >= jetpattern.Length)
-                {
                     jetIndex = 0;
-
-                 
-                }
 
                 var jetXOffset = jetpattern[jetIndex] == '>' ? 1 : -1;
                 var canMoveX = true;
@@ -248,33 +272,14 @@
                         map[rockYOffset - y][rockXOffset + x] = '#';
                     }
                 }
-            } 
-
-            if (map[Math.Max(0, rockYOffset - 3)].All(c => c == '#'))
-            {
-
             }
 
             topRow = Math.Max(topRow, rockYOffset);
 
-            /*Console.WriteLine();
-            Console.WriteLine();
-            Console.WriteLine($"Rock {i}:");
-            Console.WriteLine();
-            for (int j = topRow; j >= 0; j--)
-            {
-                Console.WriteLine(String.Join("", map[j]));
-            }*/
-
-            //Console.ReadKey();
+            heightList.Add(topRow);
         }
 
-
-
-
-
-        return (topRowMultiplier * 5000 + topRow).ToString();
-
+        return topRow.ToString();
     }
 
     static string[] GetInput(string inputPath) =>
