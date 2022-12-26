@@ -150,6 +150,10 @@
 </div>
 <div>
 <a href="https://adventofcode.com/2022/day/22">Day 22</a>
+<ul>
+<li>Difficulty: hard</li>
+<li>Challenges: geometry</li>
+</ul>
 </div>
 <div>
 <a href="https://adventofcode.com/2022/day/23">Day 23 - Unstable Diffusion</a>
