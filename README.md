@@ -149,7 +149,7 @@
 </ul>
 </div>
 <div>
-<a href="https://adventofcode.com/2022/day/22">Day 22</a>
+<a href="https://adventofcode.com/2022/day/22">Day 22 - Monkey Map</a>
 <ul>
 <li>Difficulty: hard</li>
 <li>Challenges: geometry</li>
@@ -172,8 +172,8 @@
 <div>
 <a href="https://adventofcode.com/2022/day/24">Day 25 - Full of Hot Air</a>
 <ul>
-<li></li>
-<li></li>
+<li>Difficulty: hard</li>
+<li>Challenges: bfs, converting between different bases</li>
 </ul>
 </div>
 </body>
